@@ -4,7 +4,7 @@ int main()
 {
 	Vector wek1(3);
 	wek1[0]=1; wek1[1]=2; wek1[2]=3;
-	Vector wek2(3);
+	Vector wek2(2);
 	Vector wek3(3, 2);
 
 	Vector ans1 = wek1 * 5;
