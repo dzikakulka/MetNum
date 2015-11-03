@@ -1,8 +1,6 @@
 #include "../inc/vec.hh"
 #include <iostream>
 
-#define NULL 0
-
 /// KONSTRUKTORY ///
 // bezparametryczny - pusty wektor
 Vector::Vector(){ size=0; el=NULL; }
@@ -40,11 +38,22 @@ double& Vector::operator[] (int ind)
 			return el[ind];
 		}
 // drukuj na stdout
-void Vector::Print(){ std::cout << std::endl; for(int i=0; i<size; i++) std::cout << el[i] << " "; }
+void Vector::Print() const { std::cout << std::endl; for(int i=0; i<size; i++) std::cout << el[i] << " "; }
+
+void Vector::Resize(int new_size, double init)
+{
+	double *n_el = new double[new_size];
+
+	for(int i=0; i<size; i++) n_el[i]=el[i];
+	if(new_size>size) for(int i=size; i<new_size; i++) n_el[i]=init;
+
+	delete[] el;
+	el=n_el;
+	size=new_size;
+}
 
 
-
-Vector operator+ (Vector arg1, Vector arg2)
+Vector operator+ (const Vector& arg1, const Vector& arg2)
 {
 	if(arg1.Size()!=arg2.Size())
 	{
@@ -57,7 +66,7 @@ Vector operator+ (Vector arg1, Vector arg2)
 	return ans;
 }
 
-double operator* (Vector arg1, Vector arg2)
+double operator* (const Vector& arg1, const Vector& arg2)
 {
 	if(arg1.Size()!=arg2.Size())
 	{
@@ -70,7 +79,7 @@ double operator* (Vector arg1, Vector arg2)
 	return ans;
 }
 
-Vector operator* (Vector arg1, double arg2)
+Vector operator* (const Vector& arg1, double arg2)
 {
 	Vector ans(arg1.Size());
 	for(int i=0; i<arg1.Size(); i++) ans[i]=arg1[i]*arg2;
