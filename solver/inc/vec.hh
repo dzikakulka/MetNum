@@ -1,3 +1,4 @@
+#include "util.hh"
 
 class Vector
 {
@@ -17,6 +18,7 @@ public:
 	double& operator[] (int ind);              // dostep do elementu
 	Vector& operator= (const Vector& other);
 	void Print() const;               	       // drukuj na stdout
+	void PrintIl() const;               	       // drukuj na stdout
 	void Resize(int new_size, double init=0);  // zmien rozmiar
 	void Read();
 };

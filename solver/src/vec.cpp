@@ -1,5 +1,4 @@
 #include "../inc/vec.hh"
-#include <iostream>
 
 /// KONSTRUKTORY ///
 // bezparametryczny - pusty wektor
@@ -55,7 +54,16 @@ Vector& Vector::operator= (const Vector& other)
 }
 
 // drukuj na stdout
-void Vector::Print() const { std::cout << std::endl; for(int i=0; i<size; i++) std::cout << el[i] << " "; }
+void Vector::Print() const
+{
+	std::cout << std::endl;
+	for(int i=0; i<size; i++) std::cout << std::setw(3) << el[i] << " ";
+}
+
+void Vector::PrintIl() const
+{
+	for(int i=0; i<size; i++) std::cout << std::setw(3) << el[i] << " ";
+}
 
 void Vector::Resize(int new_size, double init)
 {
