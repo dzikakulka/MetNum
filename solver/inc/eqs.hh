@@ -1,4 +1,4 @@
-#include "../inc/mat.hh"
+#include "mat.hh"
 
 class EqSys
 {
@@ -12,6 +12,7 @@ public:
 	EqSys(const Matrix& coeff, const Vector& res);
 
 	bool Solve_Cram(Vector& x_out);
+	bool Solve_Gauss(Vector& x_out);
 
 	void Print();
 };

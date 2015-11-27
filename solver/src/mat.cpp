@@ -1,6 +1,4 @@
 #include "../inc/mat.hh"
-#include "../inc/util.hh"
-#include <iostream>
 
 Matrix::Matrix(){size = 0; row = NULL;}
 

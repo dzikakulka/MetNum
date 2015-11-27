@@ -44,10 +44,13 @@ int main()
 
 	EqSys s1(m1, v1);
 	s1.Print();
-	Vector rozw(rozm);
-	s1.Solve_Cram(rozw);
-	rozw.Print();	
-	/*m1.Print();
+	Vector rozwC, rozwG;
+	s1.Solve_Cram(rozwC);
+	s1.Solve_Gauss(rozwG);
+	Nl();
+	M("Rozw Cramr: "); rozwC.PrintIl(); Nl();	
+	M("Rozw Gauss: "); rozwG.PrintIl(); Nl();
+/*m1.Print();
 	m1.Resize(3, 5);
 	m1.Print();
 	Matrix m2(m1.Transpose());
