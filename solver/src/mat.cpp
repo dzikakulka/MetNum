@@ -80,7 +80,7 @@ void Matrix::Resize(int rows, int cols)
 Matrix Matrix::Transpose() const
 {
 	Matrix temp(Cols(), Rows());
-	temp.Print();
+	//temp.Print();
 	for(int r=0; r<Rows(); r++)
 		for(int c=0; c<Cols(); c++)	
 			temp[c][r]=row[r][c];
@@ -133,4 +133,24 @@ double Matrix::Det(bool part_piv) const
 	if(zam%2) det=-1*det;
 
 	return det;
+}
+
+
+Vector operator*(const Matrix& mat, const Vector& vec)
+{
+	if(mat.Cols() != vec.Size())
+	{
+		std::cerr << "Niepoprawne wymiary argumentow\n";
+		std::terminate();
+	}
+	Vector ans(vec.Size());
+	double temp=0;
+	for(int i=0; i<mat.Rows(); i++)
+	{
+		for(int j=0; j<mat.Cols(); j++)
+			temp+=mat[i][j]*vec[j];
+		ans[i]=temp;
+		temp=0;
+	}
+	return ans;
 }

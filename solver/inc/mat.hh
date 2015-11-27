@@ -25,7 +25,6 @@ public:
 	void Print() const;               	      
 	void Resize(int rows, int cols);
 
-
-
-
 };
+
+Vector operator*(const Matrix& mat, const Vector& vec);
