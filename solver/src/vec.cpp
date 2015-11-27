@@ -77,6 +77,14 @@ void Vector::Resize(int new_size, double init)
 	size=new_size;
 }
 
+double Vector::abs()
+{
+	double abs=0;
+	for(int i=0; i<size; i++)
+		abs+=el[i]*el[i];
+	return sqrt(abs);
+}
+
 void Vector::Read(std::istream& inStr)
 {
 	for(int i=0; i<size; i++)

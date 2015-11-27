@@ -21,6 +21,7 @@ public:
 	void PrintIl() const;               	       // drukuj na stdout
 	void Resize(int new_size, double init=0);  // zmien rozmiar
 	void Read(std::istream& inStr=std::cin);
+	double abs();
 };
 
 // DZIALANIA NA WEKTORACH
