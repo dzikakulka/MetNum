@@ -5,6 +5,6 @@ double abs(double val)
 	return (val>0)?val:(-1*val);
 }
 
-void M(std::string mess){ std::cout << mess; }
+void M(std::string mess, std::ostream& outStr){ outStr << mess; }
 
-void Nl(int lines){ for(int i=0; i<lines; i++) std::cout << std::endl << std::flush; }
+void Nl(int lines, std::ostream& outStr){ for(int i=0; i<lines; i++) outStr << std::endl << std::flush; }

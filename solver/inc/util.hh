@@ -1,9 +1,10 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <cmath>
 
 double abs(double val);
 
-void M(std::string mess);
+void M(std::string mess, std::ostream& outStr=std::cout);
 
-void Nl(int lines=1);
+void Nl(int lines=1, std::ostream& outStr=std::cout);
