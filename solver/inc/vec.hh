@@ -17,10 +17,10 @@ public:
 	double operator[] (int ind) const;         // zwracanie elementu
 	double& operator[] (int ind);              // dostep do elementu
 	Vector& operator= (const Vector& other);
-	void Print() const;               	       // drukuj na stdout
+	void Print(std::ostream& outStr=std::cout) const;               	       // drukuj na stdout
 	void PrintIl() const;               	       // drukuj na stdout
 	void Resize(int new_size, double init=0);  // zmien rozmiar
-	void Read();
+	void Read(std::istream& inStr=std::cin);
 };
 
 // DZIALANIA NA WEKTORACH

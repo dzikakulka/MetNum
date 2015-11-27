@@ -54,10 +54,10 @@ Vector& Vector::operator= (const Vector& other)
 }
 
 // drukuj na stdout
-void Vector::Print() const
+void Vector::Print(std::ostream& outStr) const
 {
-	std::cout << std::endl;
-	for(int i=0; i<size; i++) std::cout << std::setw(3) << el[i] << " ";
+	outStr << std::endl;
+	for(int i=0; i<size; i++) outStr << std::setw(3) << el[i] << " ";
 }
 
 void Vector::PrintIl() const
@@ -77,10 +77,10 @@ void Vector::Resize(int new_size, double init)
 	size=new_size;
 }
 
-void Vector::Read()
+void Vector::Read(std::istream& inStr)
 {
 	for(int i=0; i<size; i++)
-		std::cin >> el[i];
+		inStr >> el[i];
 	//std::cout << "Read: "; this->Print(); std::cout << std::endl;
 }
 
