@@ -109,3 +109,10 @@ Vector operator* (const Vector& arg1, double arg2)
 	for(int i=0; i<arg1.Size(); i++) ans[i]=arg1[i]*arg2;
 	return ans;
 }
+
+Vector operator/  (const Vector& arg1, double arg2)
+{
+		Vector ans(arg1.Size());
+	for(int i=0; i<arg1.Size(); i++) ans[i]=arg1[i]/arg2;
+	return ans;
+}

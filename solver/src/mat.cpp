@@ -49,7 +49,7 @@ void Matrix::Resize_Cols(int new_size, double init){}
 void Matrix::Resize_Rows(int new_size, double init){}
 
 
-double Matrix::Det()
+double Matrix::Det(bool part_piv) const
 {
 	if((Rows()!=Cols()) || (size == 0) )
 	{
@@ -57,15 +57,16 @@ double Matrix::Det()
 		return 0;
 	}
 
+
 	int zam=0;
 	for(int i=0; i<size; i++)
 	{
-		if(row[i][i]==0)
+		if(part_piv || (row[i][i]==0))
 		{
-			int imax=i+1;
-			for(int j=i+2; j<size; j++)
+			int imax=i;
+			for(int j=i+1; j<size; j++)
 				if(abs(row[j][i]) > abs(row[imax][i])) imax=j;
-			if((imax >= size) || (row[imax][i] == 0)) return 0;
+			if(row[imax][i]==0){ std::cerr << "Uklad sprzeczny\n"; return 0;}
 			//std::cout << "DEBUG_b:\n" << "i=" << i << " imax=" << imax << std::endl;
 			//std::cout << "[i]: "; row[i].Print(); std::cout << "[imax]: "; row[imax].Print();
 			Vector temp(row[i]);
@@ -75,7 +76,18 @@ double Matrix::Det()
 			//std::cout << "[i]: "; row[i].Print(); std::cout << "[imax]: "; row[imax].Print();
 			zam+=imax-i;
 		}
+
+		//row[i]=row[i]/row[i][i];
+		for(int j=i+1; j<size; j++)
+		{
+			row[j]=row[j]+((row[i]*(-1))*(row[j][i]/row[i][i]));
+		}
+			
 	}
 
-	return 0;
+	double det=1;
+	for(int i=0; i<size; i++) det*=row[i][i];
+	if(zam%2) det=-1*det;
+
+	return det;
 }

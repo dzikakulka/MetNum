@@ -28,5 +28,5 @@ double operator* (const Vector& arg1, const Vector& arg2); // mnozenie SKALARNE
 
 // DZIALANIA MIESZANE
 Vector operator* (const Vector& arg1, double arg2); // mnozenie przez skalar
-//Vector operator/ (Vector arg1, double arg2); // dzielenie przez skalar (j.w. wygoda)
+Vector operator/ (const Vector& arg1, double arg2); // dzielenie przez skalar (j.w. wygoda)
 

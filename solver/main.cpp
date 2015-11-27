@@ -1,4 +1,5 @@
 #include "inc/mat.hh"
+#include <iostream>
 
 int main()
 {
@@ -7,18 +8,21 @@ int main()
 	v1.Print();	v2.Print();
 	v1.Read();
 	v1.Print();	v2.Print();*/
+
+	int rozm;
+	std::cout << "Rozmiar: "; std::cin >> rozm;
 	
+	Matrix m1(rozm, rozm);
 	
-	Vector v1(5), v2(5), v3(5), v4(5), v5(5);
-	v1.Read(); v2.Read(); v3.Read(); v4.Read(); v5.Read();
-	Matrix m1(5,5);
-	m1.Set(v1, 0);
-	m1.Set(v2, 1);
-	m1.Set(v3, 2);
-	m1.Set(v4, 3);
-	m1.Set(v5, 4);
+	Vector *rows = new Vector[rozm];
+	std::cout << std::endl;
+	for(int i=0; i<rozm; i++){
+		rows[i].Resize(rozm);
+		rows[i].Read();
+		m1.Set(rows[i], i);
+	}
 	m1.Print();
-	m1.Det();
+	std::cout << "DET: " << m1.Det();
 	m1.Print();
 	
 	return 0;

@@ -13,7 +13,7 @@ public:
 	void Set(Vector vec, int ind);
 	//void Append(Vector vec);
 	
-	double Det();
+	double Det(bool part_piv=true) const;
 	
 	int Rows() const;                          
 	int Cols() const;
