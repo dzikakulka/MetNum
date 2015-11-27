@@ -33,3 +33,6 @@
 
 # Core dump
 core
+
+# Data files
+*.dat
