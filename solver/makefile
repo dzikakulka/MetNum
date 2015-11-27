@@ -21,6 +21,7 @@ eqs.o: inc/eqs.hh src/eqs.cpp
 clean:
 	rm -f *.out
 	rm -f out/*.o
+	rm -f output.dat 
 
 qsolve: qsolve.o util.o vec.o mat.o eqs.o
 	g++ ${FLAGS} -o qsolve.out out/qsolve.o out/util.o out/vec.o out/mat.o out/eqs.o
