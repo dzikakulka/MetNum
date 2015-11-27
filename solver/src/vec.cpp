@@ -12,6 +12,13 @@ Vector::Vector(int new_size, double init)
 			for(int i=0; i<new_size; i++) el[i]=init;
 		}
 
+Vector::Vector(const Vector& vec)
+{
+    size=vec.Size();
+	el = new double[size];
+	for(int i=0; i<size; i++) el[i]=vec[i];
+}
+
 /// METODY ///
 // rozmiar
 int Vector::Size() const { return size;}
@@ -37,6 +44,16 @@ double& Vector::operator[] (int ind)
 
 			return el[ind];
 		}
+
+
+Vector& Vector::operator= (const Vector& other)
+{
+	this->Resize(other.Size());
+	for(int i=0; i<size; i++)
+		el[i]=other[i];
+	return *this;
+}
+
 // drukuj na stdout
 void Vector::Print() const { std::cout << std::endl; for(int i=0; i<size; i++) std::cout << el[i] << " "; }
 
@@ -50,6 +67,13 @@ void Vector::Resize(int new_size, double init)
 	delete[] el;
 	el=n_el;
 	size=new_size;
+}
+
+void Vector::Read()
+{
+	for(int i=0; i<size; i++)
+		std::cin >> el[i];
+	std::cout << "Read: "; this->Print(); std::cout << std::endl;
 }
 
 
