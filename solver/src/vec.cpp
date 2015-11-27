@@ -61,7 +61,7 @@ void Vector::Resize(int new_size, double init)
 {
 	double *n_el = new double[new_size];
 
-	for(int i=0; i<size; i++) n_el[i]=el[i];
+	for(int i=0; i<((new_size<size)?new_size:size); i++) n_el[i]=el[i];
 	if(new_size>size) for(int i=size; i<new_size; i++) n_el[i]=init;
 
 	delete[] el;
@@ -73,7 +73,7 @@ void Vector::Read()
 {
 	for(int i=0; i<size; i++)
 		std::cin >> el[i];
-	std::cout << "Read: "; this->Print(); std::cout << std::endl;
+	//std::cout << "Read: "; this->Print(); std::cout << std::endl;
 }
 
 
