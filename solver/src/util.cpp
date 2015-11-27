@@ -7,4 +7,4 @@ double abs(double val)
 
 void M(std::string mess){ std::cout << mess; }
 
-void Nl(int lines){ for(int i=0; i<lines; i++) std::cout << std::endl; }
+void Nl(int lines){ for(int i=0; i<lines; i++) std::cout << std::endl << std::flush; }
