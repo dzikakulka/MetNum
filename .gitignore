@@ -30,3 +30,6 @@
 # Emacs files
 \#*#
 *~
+
+# Core dump
+core
