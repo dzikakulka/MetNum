@@ -11,7 +11,7 @@ EqSys::EqSys(const Matrix& coeff, const Vector& res)
 	A=coeff; b=res; size=A.Rows();
 }
 
-bool EqSys::Solve_Cram(Vector& x_out)
+bool EqSys::Solve_Cram(Vector& x_out, Vector& err_out)
 {
 	double m_det = A.Det();
 	if(m_det==0){std::cout << "Zerowy wyznacznik glowny ukladu\n"; return false;}
@@ -25,10 +25,12 @@ bool EqSys::Solve_Cram(Vector& x_out)
 	x_out.Resize(A.Rows());
 	for(int i=0; i<x_out.Size(); i++)
 		x_out[i]=x_det[i]/m_det;
+	err_out.Resize(A.Rows());
+	err_out=A*x_out+(b*-1);
 	return true;
 }
 
-bool EqSys::Solve_Gauss(Vector& x_out)
+bool EqSys::Solve_Gauss(Vector& x_out, Vector& err_out)
 {
 	Matrix mat(A);
 	//Vector vec(b.Size());
@@ -36,7 +38,7 @@ bool EqSys::Solve_Gauss(Vector& x_out)
 	mat.Resize(mat.Rows(), mat.Cols()+1);
 	for(int i=0; i<b.Size(); i++)
 		mat[i][mat.Cols()-1] = b[i];
-	mat.Print();
+	//mat.Print();
 	
 	for(int i=0; i<size; i++)
 	{
@@ -79,6 +81,8 @@ bool EqSys::Solve_Gauss(Vector& x_out)
 	x_out.Resize(mat.Rows());
 	for(int i=0; i<x_out.Size(); i++)
 		x_out[i]=mat[i][mat.Cols()-1];
+		err_out.Resize(A.Rows());
+	err_out=A*x_out+(b*-1);
 	return true;
 }
 
