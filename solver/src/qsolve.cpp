@@ -1,8 +1,8 @@
 #include "../inc/eqs.hh"
 #include <fstream>
 
-#define IN "../input.dat"
-#define OUT "../output.dat"
+#define IN "input.dat"
+#define OUT "output.dat"
 
 int main()
 {
@@ -30,11 +30,13 @@ int main()
 	Vector rozwC, rozwG, bladC, bladG;
 	s1.Solve_Cram(rozwC, bladC);
 	s1.Solve_Gauss(rozwG, bladG);
-	M("#C");
+	M("#C", outStr);
 	rozwC.Print(outStr);
-	bladC.Print(outStr); Nl(2);
-	M("#G");
+	bladC.Print(outStr); Nl(1, outStr);
+	outStr << bladC.abs(); Nl(2, outStr);
+	M("#G", outStr);
 	rozwG.Print(outStr);
-	bladG.Print(outStr);
+	bladG.Print(outStr); Nl(1, outStr);
+	outStr << bladG.abs();
 	return 0;
 }
