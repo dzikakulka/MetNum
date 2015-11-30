@@ -4,13 +4,15 @@
 #define IN "input.dat"
 #define OUT "output.dat"
 
-int main()
+int main(int argc, char* argv[])
 {
-
 	std::ifstream inStr;
-	inStr.open(IN);
 	std::ofstream outStr;
-	outStr.open(OUT);
+	
+	if(argc>1) outStr.open(argv[2]);
+	else outStr.open(OUT);
+	if(argc>0) inStr.open(argv[1]);
+	else inStr.open(IN);
 	
 	int rozm;
     inStr >> rozm;
@@ -30,6 +32,7 @@ int main()
 	Vector rozwC, rozwG, bladC, bladG;
 	s1.Solve_Cram(rozwC, bladC);
 	s1.Solve_Gauss(rozwG, bladG);
+	//(bladG.abs() < bladC.abs())?(rozwG.Print(outStr)):(rozwC.Print(outStr));
 	M("#C", outStr);
 	rozwC.Print(outStr);
 	bladC.Print(outStr); Nl(1, outStr);
@@ -38,5 +41,7 @@ int main()
 	rozwG.Print(outStr);
 	bladG.Print(outStr); Nl(1, outStr);
 	outStr << bladG.abs();
+
+	delete[] rows;
 	return 0;
 }
