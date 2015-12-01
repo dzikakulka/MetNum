@@ -1,6 +1,6 @@
 #include "../inc/inter.hh"
 
-//#define PLOT "plot.dat"
+#define ADD_RANGE 0
 
 bool les_solve(const char *input, const char *output)
 {
@@ -41,24 +41,32 @@ void build_vander(const char *input, const char *output)
 void plot2d(const char *points, const char *poly)
 {
 
-	std::ifstream iStr(poly);
+	std::ifstream iStr(points);
+
+	double in, x_first, x_last;
+	if(iStr >> in) x_first = in;
+
+	for(int k=2; iStr >> in; k=((k==3)?(1):(k+1)))
+		if(k==1) x_last = in;
+
+	iStr.close();
+	iStr.open(poly);
+	
 	std::vector<double> coeff;
 	double temp;
 	while(iStr >> temp)
 		coeff.push_back(temp);
-
+	
 	std::ofstream oStr("plot.dat");
 	oStr << "f(x) = ";
 	for(unsigned int i=0; i<coeff.size(); i++)
 		oStr << "+" << coeff[i] << "*x**" << coeff.size()-1-i;
-	oStr << std::endl << "plot f(x)";
-	oStr << std::endl << "replot \"-\" using 1:2 with points" << std::endl;
-	iStr.close();
-	iStr.open(points);
-	char in;
-	while(iStr >> std::noskipws >> in)
-		oStr << in;
-	oStr << std::endl << "end" << std::endl << "pause -1";
+	double range = x_last - x_first;
+	oStr << "\nplot [x=" << x_first-(range*ADD_RANGE) << ":" << x_last+(range*ADD_RANGE) << "] f(x)\n";
+	//std::string points_file(points);
+	//if(points_file[0]=='.') points_file.erase(0, 2);
+	oStr << "replot '" << points << "' with points\n";
+	oStr << "pause -1";
 
 	system("gnuplot -persist plot.dat&");
 	
@@ -123,32 +131,18 @@ void plot3d(const char *points, const char *polyxy, const char *polyxz)
 
 	iStr.close();
 	iStr.open(points);
-
-	std::ofstream tempStr("data/temp.dat");
-	
-	tempStr << "replot '-' using 1:2:3 with points" << std::endl;
 	
     double in, x_first, x_last;
-	if(iStr >> in){ x_first = in; tempStr << in << " ";}
+	if(iStr >> in) x_first = in;
 
 	for(int k=2; iStr >> in; k=((k==3)?(1):(k+1)))
-	{
-		tempStr << in << " ";
-		if(k==3) tempStr << std::endl;
 		if(k==1) x_last = in;
-	}
-	tempStr << "end" << std::endl << "pause -1";
 	
 	oStr << "set parametric" << std::endl;
 	oStr << "set xlabel \"X\"\nset ylabel \"Y\"\nset zlabel \"Z\"\n";
-	oStr << "splot [x=" << x_first-(x_first*0.1) << ":" << x_last+(x_last*0.1) << "] x, y(x), z(x) \n";
-
-	tempStr.close();
-	iStr.close();
-	iStr.open("data/temp.dat");
-	char tmp;
-	while(iStr >> std::noskipws >> tmp)
-		oStr << tmp;
+  	double range = x_last - x_first;
+	oStr << "splot [x=" << x_first-(range*ADD_RANGE) << ":" << x_last+(range*ADD_RANGE) << "] x, y(x), z(x) \n";
+	oStr << "replot '" << points << "' with points\n pause -1"; 
 
 	system("gnuplot -persist plot.dat&");
 }
