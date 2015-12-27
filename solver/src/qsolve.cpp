@@ -32,15 +32,15 @@ int main(int argc, char* argv[])
 	Vector rozwC, rozwG, bladC, bladG;
 	s1.Solve_Cram(rozwC, bladC);
 	s1.Solve_Gauss(rozwG, bladG);
-	//(bladG.abs() < bladC.abs())?(rozwG.Print(outStr)):(rozwC.Print(outStr));
-	M("#C", outStr);
+	(bladG.abs() < bladC.abs())?(rozwG.Print(outStr)):(rozwC.Print(outStr));
+	/*M("#C", outStr);
 	rozwC.Print(outStr);
 	bladC.Print(outStr); Nl(1, outStr);
 	outStr << bladC.abs(); Nl(2, outStr);
 	M("#G", outStr);
 	rozwG.Print(outStr);
 	bladG.Print(outStr); Nl(1, outStr);
-	outStr << bladG.abs();
+	outStr << bladG.abs();*/
 
 	delete[] rows;
 	return 0;
