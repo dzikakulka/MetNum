@@ -15,6 +15,7 @@ public:
 	Matrix(const Matrix& mat);
 
 	Matrix Transpose() const;
+	Matrix Inv() const;
 	
 	double Det(bool part_piv=true) const;
 	

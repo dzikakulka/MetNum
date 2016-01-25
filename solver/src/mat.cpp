@@ -88,6 +88,57 @@ Matrix Matrix::Transpose() const
 	return temp;
 }
 
+Matrix Matrix::Inv() const
+{
+	Matrix inv(Rows(), Cols()*2);
+	for(int r=0; r<Rows(); r++)
+		for(int c=0; c<Cols(); c++)
+			inv[r][c]=row[r][c];
+	for(int r=0; r<Rows(); r++)
+		for(int c=Cols(); c<Cols()*2; c++)
+			inv[r][c]=(r==c-Cols())?1:0;
+
+
+	for(int i=0; i<Rows(); i++)
+	{
+		if(inv[i][i]==0)
+		{
+			int imax=i;
+			for(int j=i+1; j<size; j++)
+				if(abs(inv[j][i]) > abs(inv[imax][i])) imax=j;
+			if(inv[imax][i]==0){std::cerr << "\nMacierz osobliwa!\n"; return *this;}
+			//std::cout << "DEBUG_b:\n" << "i=" << i << " imax=" << imax << std::endl;
+			//std::cout << "[i]: "; inv[i].Print(); std::cout << "[imax]: "; inv[imax].Print();
+			if(i!=imax)
+			{
+				Vector temp2(inv[i]);
+				inv[i]=inv[imax];
+				inv[imax]=temp2;
+			}
+            //std::cout << "DEBUG_a:\n" << "i=" << i << " imax=" << imax << std::endl;
+			//std::cout << "[i]: "; inv[i].Print(); std::cout << "[imax]: "; inv[imax].Print();
+		}
+		for(int j=i+1; j<Rows(); j++)
+			inv[j]=inv[j]+((inv[i]*(-1))*(inv[j][i]/inv[i][i]));
+		for(int j=i-1; j>=0; j--)
+			inv[j]=inv[j]+((inv[i]*(-1))*(inv[j][i]/inv[i][i]));
+		inv[i]=inv[i]/inv[i][i];
+		
+			
+		/*//inv[i]=inv[i]/inv[i][i];
+		for(int j=i+1; j<size; j++)
+		{
+			inv[j]=inv[j]+((inv[i]*(-1))*(inv[j][i]/inv[i][i]));
+			}*/	
+	}
+	for(int r=0; r<Rows(); r++)
+		for(int c=0; c<Cols(); c++)
+			inv[r][c]=inv[r][c+Cols()];
+	inv.Resize(Rows(), Cols());
+	inv.Print();
+	return inv;
+}
+
 double Matrix::Det(bool part_piv) const
 {
 	if((Rows()!=Cols()) || (size == 0) )
