@@ -1,6 +1,6 @@
 #include "../inc/spline.hh"
 
-void build_tridiag(const char *input, const char *output)
+void build_tridiag(const char *input, const char *output, bool natural)
 {
 	std::ifstream iStr(input);
 	std::ofstream oStr(output);
@@ -22,8 +22,9 @@ void build_tridiag(const char *input, const char *output)
 	{
 		for(int j=0; j<p_y.size(); j++)
 		{
-			if( (j == 0) && (i == 0) ) oStr << "2 ";
-			else if ( (j == p_y.size()-1) && (i == p_y.size()-1) ) oStr << "2 "; 
+			if( (j == 0) && (i == 0) && natural ) oStr << "2 ";
+			else if ( (j == p_y.size()-1) && (i == p_y.size()-1) && natural) oStr << "2 ";
+			else if(!natural && (( (j==0) && (i==p_y.size()-1) )||( (j==p_y.size()) && (i==0) ))) oStr << "1 ";
 			else if(j==i) oStr << "4 ";
 			else if( (j == i-1) || (j == i+1) ) oStr << "1 ";
 			else oStr << "0 ";
