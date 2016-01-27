@@ -42,6 +42,9 @@
 
 int main(int argc, char *argv[])
 {
+
+	// num plot_type {time_1D, time_2D, implicit_time_2D, implicit_time_3D};
+	
 	Dataset D1;
 	D1.Read(argv[1]);
 	D1.Print();

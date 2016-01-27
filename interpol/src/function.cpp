@@ -19,22 +19,33 @@ void FunPlot::Plot()
 	char fchar = 'f';
 
 
-	/*for(int i=0; i<functions.size(); i++)
+	for(int i=0; i<functions.size(); i++)
 	{
 		oStr << fchar << "(t)=" << functions[i] << "\n";
 		fchar++;
 	}
 	fchar--;
 	if(type != time_1D) oStr << "set parametric \n";
+	if(type == time_2D || type == implicit_time_3D) oStr << 's';
 	oStr << "plot [t=" << t_min << ":" << t_max << "] ";
-	for(; fchar>'f'; fchar--)
-		oStr << fchar << "(t), ";
-	oStr << "f(t) \n";
+	//if(type == time_2D) oStr << " t, ";
+	//for(; fchar>'f'; fchar--)
+	//	oStr << fchar << "(t), ";
+	//oStr << "f(t) \n";
+	char nchar='f';
+	while(nchar<fchar)
+	{
+		oStr << nchar << "(t), ";
+		nchar++;
+	}
+	oStr << fchar << "(t)";
+	if(type == time_2D) oStr << ", t";
+	oStr << "\n";
 	for(int i=0; i<points.size(); i++)
 		oStr << "\n replot '-' with points pointtype 4 lt rgb \"#FF0AFF\" \n" << points[i] << "\n end";
-		oStr << "\n pause -1";*/
+		oStr << "\n pause -1";
 	
-	switch(type)
+	/*switch(type)
 	{
 	case(time_1D):
 		for(int i=0; i<functions.size(); i++)
@@ -57,7 +68,7 @@ void FunPlot::Plot()
 		break;
 	case(implicit_time_3D):
 		break;
-		}
+		}*/
 
 	system("gnuplot -persist plot.dat&");
 
