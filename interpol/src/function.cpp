@@ -9,7 +9,7 @@ FunPlot::FunPlot(plot_type ptype)
 
 // num plot_type {time_1D, time_2D, implicit_time_2D, implicit_time_3D};
 
-void FunPlot::Add_dataset(std::string set){ points.push_back(set); }
+void FunPlot::Add_dataset(Dataset set){ points.push_back(set); }
 void FunPlot::Add_fun(std::string fun){ functions.push_back(fun); }
 void FunPlot::Plot()
 {
@@ -19,7 +19,7 @@ void FunPlot::Plot()
 	char fchar = 'f';
 
 
-	for(int i=0; i<functions.size(); i++)
+	for(unsigned int i=0; i<functions.size(); i++)
 	{
 		oStr << fchar << "(t)=" << functions[i] << "\n";
 		fchar++;
@@ -28,10 +28,7 @@ void FunPlot::Plot()
 	if(type != time_1D) oStr << "set parametric \n";
 	if(type == time_2D || type == implicit_time_3D) oStr << 's';
 	oStr << "plot [t=" << t_min << ":" << t_max << "] ";
-	//if(type == time_2D) oStr << " t, ";
-	//for(; fchar>'f'; fchar--)
-	//	oStr << fchar << "(t), ";
-	//oStr << "f(t) \n";
+	if(type == time_2D) oStr << "t, ";
 	char nchar='f';
 	while(nchar<fchar)
 	{
@@ -39,37 +36,16 @@ void FunPlot::Plot()
 		nchar++;
 	}
 	oStr << fchar << "(t)";
-	if(type == time_2D) oStr << ", t";
+	//if(type == time_2D) oStr << ", t";
 	oStr << "\n";
-	for(int i=0; i<points.size(); i++)
-		oStr << "\n replot '-' with points pointtype 4 lt rgb \"#FF0AFF\" \n" << points[i] << "\n end";
-		oStr << "\n pause -1";
-	
-	/*switch(type)
+	for(unsigned int i=0; i<points.size(); i++)
 	{
-	case(time_1D):
-		for(int i=0; i<functions.size(); i++)
-		{
-			oStr << fchar << "(t)=" << functions[i] << "\n";
-			fchar++;
-		}
-		fchar--;
-		oStr << "plot [t=" << t_min << ":" << t_max << "] ";
-		for(; fchar>'f'; fchar--)
-			oStr << fchar << "(t), ";
-		oStr << "f(t) \n";
-		for(int i=0; i<points.size(); i++)
-			oStr << "\n replot '-' with points pointtype 4 lt rgb \"#FF0AFF\" \n" << points[i] << "\n end";
-		oStr << "\n pause -1";
-		break;
-	case(time_2D):
-		break;
-	case(implicit_time_2D):
-		break;
-	case(implicit_time_3D):
-		break;
-		}*/
-
+		oStr << "\n replot '-' with points pointtype 4 lt rgb \"#FF0AFF\" \n";
+		oStr << ((type==implicit_time_2D || type==implicit_time_3D)?points[i].Data():points[i].Data_Time());
+		oStr << "\n end";
+	}
+	oStr << "\n pause -1";
+	
 	system("gnuplot -persist plot.dat&");
 
 }
@@ -80,18 +56,49 @@ void FunPlot::Set_range(double min, double max)
 
 }
 
-std::string Dataset::data(int datadim)
+std::string Dataset::Data(int datadim)
 {
 	std::stringstream str;
 	//std::cerr << "DIM:" << dim;
 	for(int i=0; i<count; i++)
 	{
+		//str << time[i] << " ";
+		if(datadim != 0)
+			str << (*points[dim-1])[i] << " ";
+		else
+			for(int j=0; j<dim; j++)
+				str << (*points[j])[i] << " ";
+		str << "\n";
+	}
+	return str.str();
+
+}
+
+std::string Dataset::Time()
+{
+std::stringstream str;
+	//std::cerr << "DIM:" << dim;
+	for(int i=0; i<count; i++)
+	{
 		str << time[i] << " ";
+		str << "\n";
+	}
+	return str.str();
+}
+
+std::string Dataset::Data_Time(int datadim)
+{
+	std::stringstream str;
+	//std::cerr << "DIM:" << dim;
+	for(int i=0; i<count; i++)
+	{
+		
 		if(datadim)
 			str << (*points[dim-1])[i] << " ";
 		else
 			for(int j=0; j<dim; j++)
 				str << (*points[j])[i] << " ";
+		str << time[i] << " ";
 		str << "\n";
 	}
 	return str.str();
@@ -160,7 +167,7 @@ void Dataset::Print() const
 	std::cout << "[i] [time(i)] [dim1(i)] ... [dimn(i)]\n";
 	for(int i=0; i<count; i++)
 	{
-		std::cout << i << " ";
+		std::cout << i << ": ";
 		std::cout << time[i] << " ";
 		for(int j=0; j<dim; j++)
 			std::cout << (*points[j])[i] << " ";

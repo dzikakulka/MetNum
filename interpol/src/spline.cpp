@@ -1,30 +1,18 @@
 #include "../inc/spline.hh"
 
 
-std::string build_spline(Dataset input, spline_type type)
+std::string build_spline(Dataset input, spline_type type, int ind)
 {
-	build_tridiag(input, type, "data/tridiag.dat", 0);
+	build_tridiag(input, type, "data/tridiag.dat", ind-1);
 	les_solve("data/tridiag.dat", "data/Dn.dat");
-	return ncb_spline(input, "data/Dn.dat", 0);
+	return ncb_spline(input, "data/Dn.dat", ind-1);
 }
 
 void build_tridiag(Dataset input, spline_type type, const char *output, int dim)
 {
-	//std::ifstream iStr(input);
 	std::ofstream oStr(output);
 	bool nat = (type==natural)?true:false;
-	/*std::vector<double> p_y;
-	double in;
-	while(iStr >> in)
-	{
-		//p_x.push_back(in);
-		if(iStr >> in)
-			p_y.push_back(in);
-		else
-			std::cerr << "Niekompletne dane!" << std::endl;
-			}*/
-
-	//oStr << p_y.size() << "\n";
+	
 	std::cerr << "X:" << input.Count();
 	oStr << input.Count() << "\n";
 	
@@ -56,27 +44,8 @@ std::string ncb_spline(Dataset points, const char *coeffs, int dim)
 {
 
 	std::ifstream iStr(coeffs);
-	//std::ofstream oStr(poly_out);
 	std::stringstream oStr;
-
-	/*std::vector<double> p_x, p_y;
-	double in;
-	while(iStr >> in)
-	{
-		p_x.push_back(in);
-		if(iStr >> in)
-			p_y.push_back(in);
-		else
-			std::cerr << "Niekompletne dane!" << std::endl;
-			}*/
-
 	int n = points.Count();
-
-	//for(int i=0; i<p_x.size(); i++)
-//		if(p_x[i]!=i) {std::cout << "NIE-E"; std::terminate();}
-
-	//iStr.close();
-	//iStr.open(coeffs);
 
 	std::vector<double> p_y;
 	for(int i=0; i<points.Count(); i++)
@@ -86,7 +55,6 @@ std::string ncb_spline(Dataset points, const char *coeffs, int dim)
 	std::vector<double> b_x;
 	while(iStr >> in)
 		b_x.push_back(in);
-	//std::cerr << "S:" << b_x.size() << " N:" << n << " " << "\n";
 	
 
 	std::vector<double> c_x;
@@ -96,28 +64,6 @@ std::string ncb_spline(Dataset points, const char *coeffs, int dim)
 	std::vector<double> d_x;
 	for(int i=0; i<(n-1); i++)
 		d_x.push_back(2*(p_y[i]-p_y[i+1])+b_x[i]+b_x[i+1]);
-
-	/*
-	std::vector<double> *ptr = &p_x;
-	for(int i=0; i<(*ptr).size(); i++)
-		oStr << (*ptr)[i] << " ";
-	oStr << "\n";
-	ptr = &p_y;
-	for(int i=0; i<(*ptr).size(); i++)
-		oStr << (*ptr)[i] << " ";
-	oStr << "\n";
-	ptr = &b_x;
-	for(int i=0; i<(*ptr).size(); i++)
-		oStr << (*ptr)[i] << " ";
-	oStr << "\n";
-	ptr = &c_x;
-	for(int i=0; i<(*ptr).size(); i++)
-		oStr << (*ptr)[i] << " ";
-	oStr << "\n";
-	ptr = &d_x;
-	for(int i=0; i<(*ptr).size(); i++)
-		oStr << (*ptr)[i] << " ";
-		oStr << "\n";*/
 
 	std::vector< std::vector<double>* > spline;
 	for(int i=0; i<(n-1); i++)
@@ -129,20 +75,17 @@ std::string ncb_spline(Dataset points, const char *coeffs, int dim)
 		poly->push_back(d_x[i]);
 		spline.push_back(poly);
 	}
-	for(int i=0; i<spline.size(); i++)
+	for(unsigned int i=0; i<spline.size(); i++)
 	{
-		//oStr << "[" << i << ":" << i+1 << "] -> ";
 		oStr << "+ ((t>=" << i << " && t<";
 		if(i+1 == spline.size()) oStr << "="; 
 		oStr << i+1 << ")?(";
-		for(int j=0; j<spline[i]->size(); j++)
+		for(unsigned int j=0; j<spline[i]->size(); j++)
 		{
 				oStr << " + " << (*spline[i])[j] << " * (t-" << i << ")**" << j;
 		}
-		//oStr << "\n";
 		oStr << "):0)";
 
-		//poly += "[" + i + ":" + i+1 + "] -> ";
 	}
 	std::string out = oStr.str();
 	return out;

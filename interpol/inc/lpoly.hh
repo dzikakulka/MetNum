@@ -12,9 +12,9 @@
 #endif
 
 
-std::string build_lpoly(Dataset points);
+std::string build_lpoly(Dataset points, int dim);
 
-void build_vander(Dataset points, const char *output, int dim);
+void build_vander(Dataset *points, const char *output, int dim);
 
 std::string lpoly(const char *coeffs);
 
