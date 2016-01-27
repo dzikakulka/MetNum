@@ -2,24 +2,7 @@
 
 int main()
 {
-	
 	int rozm;
-	M("\nRozmiar ukladu: ");
-	std::cin >> rozm;
-
-
-	Matrix m1(rozm, rozm);
-	Vector v1(rozm);
-	Vector *rows = new Vector[rozm];
-	std::cout << std::endl;
-	for(int i=0; i<rozm; i++){
-		rows[i].Resize(rozm);
-		rows[i].Read();
-		m1.Set(rows[i], i);}
-
-	m1.Inv();
-
-	/*int rozm;
 	M("\nRozmiar ukladu: ");
 	std::cin >> rozm;
 	
@@ -52,5 +35,5 @@ int main()
 	M("\nBlad Gauss:\n e: ");
 	bladG.PrintIl();
 	std::cout << "(abs: " << bladG.abs() << ")"; Nl(2);
-	return 0;*/
+	return 0;
 }
