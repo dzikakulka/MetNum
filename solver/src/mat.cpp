@@ -22,16 +22,7 @@ Matrix::Matrix(const Matrix& mat)
 	}
 	
 }
-//Matrix::Matrix()
-	
-/*Matrix::Matrix(Vector *rows, int quant)
-{
-	size = quant;
-	row = new Vector[size];
-	for(int i=0; i<size; i++)
-		row[i]=rows[i];
 
-		}*/
 
 void Matrix::Set(Vector vec, int ind)
 {
@@ -125,11 +116,6 @@ Matrix Matrix::Inv() const
 		inv[i]=inv[i]/inv[i][i];
 		
 			
-		/*//inv[i]=inv[i]/inv[i][i];
-		for(int j=i+1; j<size; j++)
-		{
-			inv[j]=inv[j]+((inv[i]*(-1))*(inv[j][i]/inv[i][i]));
-			}*/	
 	}
 	for(int r=0; r<Rows(); r++)
 		for(int c=0; c<Cols(); c++)

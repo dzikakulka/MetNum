@@ -32,7 +32,11 @@ int main(int argc, char* argv[])
 	Vector rozwC, rozwG, bladC, bladG;
 	s1.Solve_Cram(rozwC, bladC);
 	s1.Solve_Gauss(rozwG, bladG);
+
+	// DO BINARKI DO INTERPOLACJI
 	//(bladG.abs() < bladC.abs())?(rozwG.Print(outStr)):(rozwC.Print(outStr));
+
+	
 	M("#C", outStr);
 	rozwC.Print(outStr);
 	bladC.Print(outStr); Nl(1, outStr);
