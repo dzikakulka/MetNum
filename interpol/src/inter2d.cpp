@@ -1,9 +1,12 @@
+#ifndef _FH
+#define _FH
+#include "../inc/function.hh"
+#endif
 #include "../inc/inter.hh"
 #include "../inc/spline.hh"
 
-#define POINTS "./input.dat"
 
-void do_prezentacji(const char *lag, const char *cbspl, const char *cpspl, const char *out, int min, int max)
+/*void do_prezentacji(const char *lag, const char *cbspl, const char *cpspl, const char *out, int min, int max)
 {
 	std::ifstream iStr(lag);
 	std::ofstream oStr(out);
@@ -35,22 +38,22 @@ void do_prezentacji(const char *lag, const char *cbspl, const char *cpspl, const
 	oStr << "\n replot 'sinput.dat' with points pointtype 4 lc rgb \"#FF0AFF\"";
 	oStr << "\npause -1";
 	
-}
+	}*/
 
 int main(int argc, char *argv[])
 {
-	const char *in;
-	if(argc<2){in = POINTS;}
-	else in = argv[1];
-    build_vander(in, "data/vander.dat");
-	les_solve("data/vander.dat", "data/lgr_poly.dat");
-	//plot2d(in, "data/lgr_poly.dat");
-	build_tridiag(in, "data/tridiag.dat", true);
-	les_solve("data/tridiag.dat", "data/ncb_coeff.dat");
-	ncb_spline(in, "data/ncb_coeff.dat", "data/ncb_poly_nat.dat");
-	build_tridiag(in, "data/tridiag.dat", false);
-	les_solve("data/tridiag.dat", "data/ncb_coeff.dat");
-	ncb_spline(in, "data/ncb_coeff.dat", "data/ncb_poly_clp.dat");
-	do_prezentacji("data/lgr_poly.dat", "data/ncb_poly_nat.dat", "data/ncb_poly_clp.dat", "prezout", 0, 5);
+	Dataset D1;
+	D1.Read(argv[1]);
+	D1.Print();
+	FunPlot P1(time_1D);
+	P1.Set_range(D1.tmin(), D1.tmax());
+	P1.Add_dataset(D1.data());
+	P1.Add_fun(build_lpoly(D1));
+	P1.Add_fun(build_spline(D1, natural));
+	P1.Plot();
+	//std::ofstream oStr("ntest");
+	
+	//oStr << "f(x)=" << build_lpoly(D1) << "\n";
+	//oStr << "plot [x=0:3] f(x)" << "\n pause -1";
 	return 0;
 }

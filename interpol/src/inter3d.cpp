@@ -1,7 +1,6 @@
-#include "../inc/inter.hh"
-#include "../inc/function.hh"
-
-#define POINTS "./input3.dat"
+//#include "../inc/inter.hh"
+//#include "../inc/function.hh"
+#include "../inc/spline.hh"
 
 int main(int argc, char *argv[])
 {
@@ -19,6 +18,11 @@ int main(int argc, char *argv[])
 	Dataset D1;
 	D1.Read("dtest");
 	D1.Print();
+
+	std::ofstream oStr("ntest");
+	
+	oStr << "f(x)=" << build_spline(D1, natural) << "\n";
+	oStr << "plot [x=0:3] f(x)" << "\n pause -1";
 
 	return 0;
 }

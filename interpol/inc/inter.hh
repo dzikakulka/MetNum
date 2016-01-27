@@ -4,15 +4,22 @@
 #include <cmath>
 #include <vector>
 #include <fstream>
+#include <sstream>
 
-#define SOLVE_RUN "./solve"
+#ifndef _FH
+#define _FH
+#include "../inc/function.hh"
+#endif
 
-bool les_solve(const char *input, const char *output);
 
-void build_vander(const char *input, const char *output);
+std::string build_lpoly(Dataset points);
 
-void plot2d(const char *points, const char *poly);
+void build_vander(Dataset points, const char *output, int dim);
 
-void split3d(const char *input, const char *out1, const char *out2);
+std::string lpoly(const char *coeffs);
 
-void plot3d(const char *points, const char *polyxy, const char *polyxz);
+//void plot2d(const char *points, const char *poly);
+
+//void split3d(const char *input, const char *out1, const char *out2);
+
+//void plot3d(const char *points, const char *polyxy, const char *polyxz);

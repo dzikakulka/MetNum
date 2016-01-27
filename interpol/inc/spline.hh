@@ -3,11 +3,16 @@
 #include <string>
 #include <vector>
 #include <fstream>
-
-void build_tridiag(const char *input, const char *output, bool natural);
-
-void ncb_spline(const char *points, const char *coeffs, const char *poly_out);
+#include <sstream>
+#ifndef _FH
+#define _FH
+#include "../inc/function.hh"
+#endif
 
 enum spline_type {natural, clamped};
 
-void build_spline()
+void build_tridiag(Dataset input, spline_type type, const char *output, int dim);
+
+std::string ncb_spline(Dataset points, const char *coeffs, int dim);
+
+std::string build_spline(Dataset input, spline_type type);

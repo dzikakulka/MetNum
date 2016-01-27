@@ -2,18 +2,36 @@
 
 #define ADD_RANGE 0
 
-bool les_solve(const char *input, const char *output)
+
+std::string build_lpoly(Dataset points)
 {
-	std::string command = SOLVE_RUN;
-	command = command + " " + input + " " + output; 
-	system(command.c_str());
-	
-	return true;
+	build_vander(points, "data/vander.dat", 0);
+	les_solve("data/vander.dat", "data/coeffs.dat");
+	return lpoly("data/coeffs.dat");
 }
 
-void build_vander(const char *input, const char *output)
+std::string lpoly(const char *coeffs)
 {
-	std::vector<double> p_x, p_y;
+	std::ifstream iStr(coeffs);
+	std::stringstream str;
+
+	std::vector<double> temp;
+	double in;
+	while(iStr >> in)
+		temp.push_back(in);
+
+	int n=temp.size();
+	for(int i=0; i<n; i++)
+		str << " + " << temp[i] << "*t**" << n-i-1;
+	return str.str();
+	
+}
+
+
+
+void build_vander(Dataset points, const char *output, int dim)
+{
+	/*std::vector<double> p_x, p_y;
 	std::ifstream inStr(input);
 	double in;
 	while(inStr >> in)
@@ -23,17 +41,18 @@ void build_vander(const char *input, const char *output)
 			p_y.push_back(in);
 		else
 			std::cerr << "Niekompletne dane!" << std::endl;
-	}
+			}*/
 
 	std::ofstream oStr(output);
-	oStr << p_x.size() << std::endl << std::endl;
-	for(unsigned int i=0; i<p_x.size(); i++){
-		for(int j=p_x.size()-1; j>=0; j--)
-			oStr << pow(p_x[i], (double) j) << " ";
+	
+	oStr << points.Count() << std::endl << std::endl;
+	for(unsigned int i=0; i<points.Count(); i++){
+		for(int j=points.Count()-1; j>=0; j--)
+			oStr << pow(points.t(i), (double) j) << " ";
 		oStr << std::endl;}
 	oStr << std::endl << std::endl;
-	for(unsigned int i=0; i<p_x.size(); i++)
-		oStr << p_y[i] << " ";
+	for(unsigned int i=0; i<points.Count(); i++)
+		oStr << points.p(dim, i) << " ";
 
 
 }
@@ -60,7 +79,7 @@ void plot2d(const char *points, const char *poly)
 	std::ofstream oStr("plot.dat");
 	oStr << "f(x) = ";
 	for(unsigned int i=0; i<coeff.size(); i++)
-		oStr << "+" << coeff[i] << "*x**" << coeff.size()-1-i;
+		oStr << "+" << coeff[i] << "*t**" << coeff.size()-1-i;
 	double range = x_last - x_first;
 	oStr << "\nplot [x=" << x_first-(range*ADD_RANGE) << ":" << x_last+(range*ADD_RANGE) << "] f(x)\n";
 	//std::string points_file(points);
